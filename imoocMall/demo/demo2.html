@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>VueX-action</title>
+  <script src="../node_modules/vue/dist/vue.js"></script>
+  <script src="../node_modules/vuex/dist/vuex.js"></script>
+</head>
+<body>
+<div id="app">
+  <h2>{{msg}}</h2>
+  <a href="javascript:;" @click="add">点击</a>
+  <!--<p>{{name}}</p>-->
+  <counter></counter>
+</div>
+
+<script>
+  const counter = {
+    template:`
+      <div>
+           <div>点击数量:{{count}}</div>
+           <p>用户名切换:{{name}}</p>
+      </div>
+      `,
+    computed:{
+      count(){
+        return this.$store.state.count;
+      },
+      name(){
+        return this.$store.state.name;
+      }
+    }
+  };
+
+  const storeVuex = new Vuex.Store({
+    state:{
+      count:10,
+      name:'jack'
+    },
+    mutations:{
+      increment(state,num){
+        state.count = state.count+num
+      },
+      updateName(state,userName){
+        state.name = userName
+      }
+    }
+  });
+
+  new Vue({
+    el:"#app",
+    store:storeVuex,
+    data:{
+      msg:"vuex的使用"
+    },
+    components:{
+      counter
+    },
+    methods:{
+      add(){
+        this.$store.commit("increment",100);
+        this.$store.commit("updateName",'sally')
+      }
+    }
+  })
+</script>
+</body>
+</html>
